@@ -1,0 +1,15 @@
+.heroShell {
+  position: relative;
+  overflow: hidden;
+}
+
+.heroGlow {
+  position: absolute;
+  inset: auto -10% -30% auto;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.32), transparent 65%);
+  filter: blur(18px);
+  pointer-events: none;
+}
