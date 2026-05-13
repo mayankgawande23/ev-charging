@@ -1,12 +1,25 @@
 import { Avatar, Switch } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SectionCard from "../UI/SectionCard";
+import { logout } from "../../store/authSlice";
 import { toggleDarkMode } from "../../store/uiSlice";
 
 export default function Profile() {
   const user = useSelector((state) => state.auth.user);
+  const role = useSelector((state) => state.auth.role);
   const darkMode = useSelector((state) => state.ui.darkMode);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  if (!user) {
+    return null;
+  }
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="space-y-6">
@@ -15,9 +28,10 @@ export default function Profile() {
           <Avatar sx={{ width: 96, height: 96, bgcolor: "#10B981", fontSize: 40 }}>{user.name[0]}</Avatar>
           <div>
             <h1 className="font-display text-4xl font-bold">{user.name}</h1>
-            <p className="mt-2 text-slate-500">{user.email}</p>
+            {user.email && <p className="mt-2 text-slate-500">{user.email}</p>}
             <p className="text-slate-500">{user.phone}</p>
             <p className="text-slate-500">{user.location}</p>
+            <p className="text-sm font-medium uppercase tracking-[0.18em] text-brand-blue">{role} account</p>
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -35,7 +49,7 @@ export default function Profile() {
           </div>
           <div className="rounded-3xl bg-slate-50 p-4 dark:bg-slate-800">
             <p className="text-sm text-slate-500">Rating</p>
-            <p className="mt-2 text-2xl font-semibold">★★★★★</p>
+            <p className="mt-2 text-2xl font-semibold">5.0 / 5</p>
           </div>
         </div>
       </SectionCard>
@@ -52,7 +66,7 @@ export default function Profile() {
         <SectionCard>
           <h2 className="font-display text-2xl font-semibold">Saved payment methods</h2>
           <div className="mt-4 space-y-3 text-sm text-slate-500">
-            <p>Visa •••• 4242 (Default)</p>
+            <p>Visa ending 4242 (Default)</p>
             <p>PayPal - john.doe@email.com</p>
           </div>
         </SectionCard>
@@ -68,6 +82,22 @@ export default function Profile() {
             <span className="text-sm font-medium">Dark mode</span>
             <Switch checked={darkMode} onChange={() => dispatch(toggleDarkMode())} />
           </div>
+        </div>
+      </SectionCard>
+
+      <SectionCard>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="font-display text-2xl font-semibold">Session</h2>
+            <p className="mt-2 text-sm text-slate-500">Your login stays active on this device until you choose to log out.</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="rounded-full border border-rose-200 px-5 py-3 text-sm font-semibold text-rose-500"
+          >
+            Logout
+          </button>
         </div>
       </SectionCard>
     </div>

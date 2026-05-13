@@ -76,6 +76,8 @@ export const bookings = [
     endTime: "3:15 PM",
     price: 150,
     date: "Today",
+    vehicleName: "Tata Nexon EV",
+    vehicleNumber: "DL01AB1234",
   },
   {
     id: "b2",
@@ -88,6 +90,8 @@ export const bookings = [
     endTime: "4:30 PM",
     price: 90,
     date: "Tomorrow",
+    vehicleName: "MG ZS EV",
+    vehicleNumber: "HR26CD5678",
   },
   {
     id: "b3",
@@ -100,6 +104,8 @@ export const bookings = [
     endTime: "2:40 PM",
     price: 225,
     date: "2 weeks ago",
+    vehicleName: "Hyundai Kona Electric",
+    vehicleNumber: "UP16EF2468",
   },
 ];
 
@@ -116,7 +122,7 @@ export const notifications = [
     id: "n2",
     category: "System",
     title: "Car fully charged",
-    message: "Your booking ended automatically. 42 kWh charged and ₹210 paid.",
+    message: "Your booking ended automatically. 42 kWh charged and Rs 210 paid.",
     time: "18 min ago",
     read: false,
   },

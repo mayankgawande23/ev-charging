@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 
 const Landing = lazy(() => import("./components/Pages/Landing"));
 const Home = lazy(() => import("./components/Pages/Home"));
+const AdminDashboard = lazy(() => import("./components/Pages/AdminDashboard"));
 const StationDetails = lazy(() => import("./components/Pages/StationDetails"));
 const Bookings = lazy(() => import("./components/Pages/Bookings"));
 const Profile = lazy(() => import("./components/Pages/Profile"));
@@ -37,15 +38,23 @@ export const router = createBrowserRouter([
       {
         path: "home",
         element: withSuspense(
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["user"]}>
             <Home />
+          </ProtectedRoute>,
+        ),
+      },
+      {
+        path: "admin",
+        element: withSuspense(
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
           </ProtectedRoute>,
         ),
       },
       {
         path: "stations/:id",
         element: withSuspense(
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["user"]}>
             <StationDetails />
           </ProtectedRoute>,
         ),
@@ -53,7 +62,7 @@ export const router = createBrowserRouter([
       {
         path: "bookings",
         element: withSuspense(
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["user"]}>
             <Bookings />
           </ProtectedRoute>,
         ),
@@ -61,7 +70,7 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: withSuspense(
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["admin", "user"]}>
             <Profile />
           </ProtectedRoute>,
         ),

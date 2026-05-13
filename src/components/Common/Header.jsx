@@ -4,18 +4,29 @@ import { Link, NavLink } from "react-router-dom";
 import { FiBell, FiMenu, FiMoon, FiSun } from "react-icons/fi";
 import { toggleDarkMode, toggleMobileMenu, toggleNotificationOpen } from "../../store/uiSlice";
 
-const navLinks = [
-  { to: "/", label: "Explore" },
-  { to: "/home", label: "Home" },
-  { to: "/bookings", label: "Bookings" },
-  { to: "/profile", label: "Profile" },
-];
-
 export default function Header() {
   const dispatch = useDispatch();
   const { darkMode, mobileMenuOpen } = useSelector((state) => state.ui);
   const unreadCount = useSelector((state) => state.notifications.items.filter((item) => !item.read).length);
-  const user = useSelector((state) => state.auth.user);
+  const { user, role, isAuthenticated } = useSelector((state) => state.auth);
+
+  const navLinks = isAuthenticated
+    ? role === "admin"
+      ? [
+          { to: "/admin", label: "Admin" },
+          { to: "/profile", label: "Profile" },
+        ]
+      : [
+          { to: "/", label: "Explore" },
+          { to: "/home", label: "Home" },
+          { to: "/bookings", label: "Bookings" },
+          { to: "/profile", label: "Profile" },
+        ]
+    : [
+        { to: "/", label: "Explore" },
+        { to: "/login", label: "Login" },
+        { to: "/register", label: "Sign Up" },
+      ];
 
   return (
     <>
@@ -50,15 +61,19 @@ export default function Header() {
             <IconButton aria-label="Toggle theme" onClick={() => dispatch(toggleDarkMode())}>
               {darkMode ? <FiSun /> : <FiMoon />}
             </IconButton>
-            <IconButton aria-label="Open notifications" onClick={() => dispatch(toggleNotificationOpen())}>
-              <Badge badgeContent={unreadCount} color="error">
-                <FiBell />
-              </Badge>
-            </IconButton>
-            <div className="hidden items-center gap-2 rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700 sm:flex">
-              <Avatar sx={{ width: 32, height: 32, bgcolor: "#10B981" }}>{user.name[0]}</Avatar>
-              <span className="text-sm font-medium">{user.name}</span>
-            </div>
+            {isAuthenticated && (
+              <IconButton aria-label="Open notifications" onClick={() => dispatch(toggleNotificationOpen())}>
+                <Badge badgeContent={unreadCount} color="error">
+                  <FiBell />
+                </Badge>
+              </IconButton>
+            )}
+            {user && (
+              <div className="hidden items-center gap-2 rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700 sm:flex">
+                <Avatar sx={{ width: 32, height: 32, bgcolor: "#10B981" }}>{user.name[0]}</Avatar>
+                <span className="text-sm font-medium">{user.name}</span>
+              </div>
+            )}
           </div>
         </div>
       </header>

@@ -1,18 +1,20 @@
 import { FiCrosshair, FiFilter, FiMinus, FiPlus } from "react-icons/fi";
 
-const controls = [
-  { label: "Center on me", icon: FiCrosshair },
-  { label: "Zoom in", icon: FiPlus },
-  { label: "Zoom out", icon: FiMinus },
-  { label: "Filters", icon: FiFilter },
+const controlConfig = [
+  { key: "recenter", label: "Center on me", icon: FiCrosshair },
+  { key: "zoomIn", label: "Zoom in", icon: FiPlus },
+  { key: "zoomOut", label: "Zoom out", icon: FiMinus },
+  { key: "filters", label: "Jump to filters", icon: FiFilter },
 ];
 
-export default function MapControls() {
+export default function MapControls({ onControl }) {
   return (
     <div className="flex gap-2">
-      {controls.map(({ label, icon: Icon }) => (
+      {controlConfig.map(({ key, label, icon: Icon }) => (
         <button
-          key={label}
+          key={key}
+          type="button"
+          onClick={() => onControl?.(key)}
           className="rounded-full border border-white/20 bg-white/10 p-3 text-white transition hover:bg-white/20"
           aria-label={label}
         >

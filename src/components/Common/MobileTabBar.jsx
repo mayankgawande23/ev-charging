@@ -1,17 +1,35 @@
 import { NavLink } from "react-router-dom";
 import { FiCalendar, FiHome, FiMapPin, FiUser } from "react-icons/fi";
-
-const tabs = [
-  { to: "/", label: "Explore", icon: FiMapPin },
-  { to: "/home", label: "Home", icon: FiHome },
-  { to: "/bookings", label: "Bookings", icon: FiCalendar },
-  { to: "/profile", label: "Profile", icon: FiUser },
-];
+import { useSelector } from "react-redux";
 
 export default function MobileTabBar() {
+  const { isAuthenticated, role } = useSelector((state) => state.auth);
+
+  const tabs = isAuthenticated
+    ? role === "admin"
+      ? [
+          { to: "/admin", label: "Admin", icon: FiHome },
+          { to: "/profile", label: "Profile", icon: FiUser },
+        ]
+      : [
+          { to: "/", label: "Explore", icon: FiMapPin },
+          { to: "/home", label: "Home", icon: FiHome },
+          { to: "/bookings", label: "Bookings", icon: FiCalendar },
+          { to: "/profile", label: "Profile", icon: FiUser },
+        ]
+    : [
+        { to: "/", label: "Explore", icon: FiMapPin },
+        { to: "/login", label: "Login", icon: FiHome },
+        { to: "/register", label: "Sign Up", icon: FiUser },
+      ];
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200 bg-white/90 px-3 py-2 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95 md:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4 gap-2">
+      <div
+        className={`mx-auto grid max-w-md gap-2 ${
+          tabs.length === 4 ? "grid-cols-4" : tabs.length === 3 ? "grid-cols-3" : "grid-cols-2"
+        }`}
+      >
         {tabs.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}

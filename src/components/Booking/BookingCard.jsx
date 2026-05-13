@@ -15,6 +15,9 @@ export default function BookingCard({ booking }) {
           </div>
           <p className="mt-2 text-sm text-slate-500">{booking.charger}</p>
           <p className="mt-1 text-sm text-slate-500">
+            {booking.vehicleName} • {booking.vehicleNumber}
+          </p>
+          <p className="mt-1 text-sm text-slate-500">
             {booking.date} • {booking.startTime} - {booking.endTime}
           </p>
         </div>
